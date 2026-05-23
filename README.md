@@ -30,4 +30,4 @@ composer require forumaker/steam-oauth:"*"
 ## 🔗 Links
 - [**GitHub Repository**](https://github.com/forumaker/Steam-Oauth)
 - [**Packagist**](https://packagist.org/packages/forumaker/steam-oauth)
-- [**Discuss**](https://discuss.flarum.org/d/)
+- [**Discuss**](https://discuss.flarum.org/d/39317-steam-oauth-steam-id-for-fof-oauth)
