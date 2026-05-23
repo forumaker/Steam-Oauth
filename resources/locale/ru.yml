@@ -1,0 +1,17 @@
+fof-oauth:
+  lib:
+    providers:
+      steam: Steam
+
+  forum:
+    providers:
+      steam: Steam
+    log_in:
+      with_steam_button: Войти через Steam
+
+  admin:
+    settings:
+      providers:
+        steam:
+          description: "Получите ключ Web API по ссылке https://steamcommunity.com/dev/apikey"
+          api_key_label: Ключ Steam Web API
