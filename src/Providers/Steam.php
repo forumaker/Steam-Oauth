@@ -23,7 +23,7 @@ class Steam extends Provider
     public function fields(): array
     {
         return [
-            'api_key' => 'steam_api_key_label',
+            'api_key' => 'fof-oauth.admin.settings.providers.steam.api_key_label',
         ];
     }
 

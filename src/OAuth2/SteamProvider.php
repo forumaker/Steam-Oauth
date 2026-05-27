@@ -7,6 +7,7 @@ use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class SteamProvider extends AbstractProvider
 {
@@ -70,7 +71,7 @@ class SteamProvider extends AbstractProvider
 
     public function getAccessToken($grant, array $options = []): AccessToken
     {
-        $rawParams    = $_GET;
+        $rawParams    = resolve(ServerRequestInterface::class)->getQueryParams();
         $openIdParams = $this->reconstructOpenIdParams($rawParams);
 
         if (empty($openIdParams)) {
@@ -99,7 +100,13 @@ class SteamProvider extends AbstractProvider
         $request  = $this->getRequest(self::METHOD_GET, $url);
         $response = $this->getParsedResponse($request);
 
-        $player            = $response['response']['players'][0] ?? [];
+        $players = $response['response']['players'] ?? [];
+
+        if (empty($players)) {
+            throw new IdentityProviderException('Steam API returned no player data for SteamID: ' . $steamId, 0, $response);
+        }
+
+        $player            = $players[0];
         $player['steamid'] = $player['steamid'] ?? $steamId;
 
         return new SteamResourceOwner($player);
@@ -144,7 +151,7 @@ class SteamProvider extends AbstractProvider
             $body
         );
 
-        $response = $this->getResponse($request);
+        $response = $this->getHttpClient()->send($request, ['timeout' => 10]);
         $content  = (string) $response->getBody();
 
         if (! str_contains($content, 'is_valid:true')) {
