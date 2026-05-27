@@ -7,7 +7,6 @@ use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class SteamProvider extends AbstractProvider
 {
@@ -71,7 +70,7 @@ class SteamProvider extends AbstractProvider
 
     public function getAccessToken($grant, array $options = []): AccessToken
     {
-        $rawParams    = resolve(ServerRequestInterface::class)->getQueryParams();
+        $rawParams    = resolve('fof-oauth-request')->getQueryParams();
         $openIdParams = $this->reconstructOpenIdParams($rawParams);
 
         if (empty($openIdParams)) {
